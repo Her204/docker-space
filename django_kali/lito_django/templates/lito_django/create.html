@@ -1,0 +1,17 @@
+{% extends 'lito_django/base.html'%}
+
+{% block title %} Create New List {% endblock%}
+{% block content %}
+	<h3 style="font-size:2vw">Crea nueva Lista</h3>
+	<form method="post" action="create/" class="form-group"
+					style="width:50vw;font-size:2vw">
+		{% csrf_token %}
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+				<button type="submit" name="save" class="btn btn-success"
+						style="font-size:2vw">Crea Nuevo Boton</button>
+			</div>
+			{{form.name}}
+		</div>
+	</form>
+{% endblock%}

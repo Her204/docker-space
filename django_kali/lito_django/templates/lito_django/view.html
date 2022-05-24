@@ -1,0 +1,12 @@
+{% extends "lito_django/base.html" %}
+{% block title %}
+View
+{% endblock %}
+{% block content %}
+  <div class="exts" style="opacity:0.8">
+	<h1 style="font-size:3.2vw"> Lista de Despliegue </h1>
+	{% for td in user.todolist.all %}
+		<p><a href="/{{td.id}}" style="font-size:2vw;">{{td.name}}</a></p>
+	{% endfor %}
+	</div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "lito_django/base.html" %}
+{% block title %} View list {% endblock %}
+{% block content %}
+	<h1 style="width:50vw;border-style:solid;font-size:3vw;
+						border-width:0.25vw;border-color:black;background-color:#333;color:#fff">
+						{{ls.name}} --> {{ls.id}}</h1>
+	<form method="post" action="#" style="border-style:solid;
+										border-color:black;border-width:0.25vw;width:50vw;background-color:#fff">
+		{% csrf_token %}
+		{% for item in ls.item_set.all %}
+		<div class="input-group mb-3" style="width:45vw;">
+			<div class="input-group-prepend">
+				<div class="input-group-text" style="font-size:1.5vw">
+					{% if item.complete == True %}
+						<input type="checkbox" value="clicked"
+									name="c{{item.id}}" style="font-size:1.5vw" hecked>
+					{% else %}
+						<input type="checkbox" value="clicked"
+									name="c{{item.id}}" style="font-size:1.5vw" checked>
+					{% endif %}
+				</div>
+			</div>
+			<input type="text" value="{{item.text}}"
+												class="form-control" style="font-size:1.5vw">
+		</div>
+		{% endfor %}
+		<div class="input-group mb-3" style="font-size:1.5vw">
+			<div class="input-group-prepend">
+				<button type="submit" name="newItem" value="newItem"
+				           class="btn btn-success" style="font-size:2vw">Add Item</button>
+			</div>
+			<input type="text" name="new">
+		</div>
+		<button type="submit" name="save" value="save" class="btn btn-success"
+										style="font-size:2vw">Save</button>
+	</form>
+	<script src="https://cdn.plot.ly/plotly-2.6.3.min.js"></script>
+	<div class="exts" style="opacity:0.8">
+	<h1 style="font-size:3.5vw"> List </h1>
+	{% for td in user.todolist.all %}
+		<p><a href="/{{td.id}}" style="font-size:1.5vw">{{td.name}}</a></p>
+	{% endfor %}
+	</div>
+	<div name="guia-ordenadora">
+		<div style="border-style:solid;border-width:1vw;border-color:white;width:50vw;opacity:0;"></div>
+		<div id="herbertdiv" style="position:center;width:50vw;
+															border-style:solid;border-width:0.25vw;border-color:black;"></div>
+	  <div style="border-style:solid;border-width:1vw;border-color:white;width:50vw;opacity:0;"></div>
+		<script type="text/javascript">
+			function cardioid(input_x){
+				let x_var = [];
+				let y_var = [];
+				let c = 0;
+				let d = 0;
+				let pi = Math.PI;
+				let base = 100;
+				for (let b=0;b<base*2;b++){
+					let x = 2*pi/(base*2);
+					let y = input_x*x;
+					let point_x = Math.cos(c-pi/2);
+					let point_y = 1+Math.sin(c-pi/2);
+					let point2_x = Math.cos(d-pi/2);
+					let point2_y = 1+Math.sin(d-pi/2);
+					let guia = 0;
+					let guia_2 = 0;
+					x_var.push(point_x);
+					x_var.push(point2_x);
+					y_var.push(point_y);
+					y_var.push(point2_y);
+					c += x;
+					d += y;
+					 };
+				return [x_var,y_var];
+			};
+			let api_vals = parseInt("{{ls.id}}");
+			let data = [];
+			let steps = [];
+			let [x_0,y_0] = cardioid(api_vals);
+			let trace0 = {
+				x: x_0,
+				y: y_0,
+				mode: "line",
+				type: "scatter",
+				color: "black",
+				name: "{{ls.name}} ",
+				marker: {size: 0.5,color:"black"}
+			};
+			let iter = 50;
+			let speed = 100;
+			for (let o=api_vals; o<=api_vals+iter;o++){
+				let [x,y] = cardioid(api_vals+o/(api_vals+iter));
+				let trace1 = {
+					data: [{x:x,y:y}],
+					name: "{{ls.name}} "+(api_vals+o/(api_vals+iter)).toString()
+				};
+				let step1 = {
+					label: "{{ls.name}} "+(api_vals+o/(api_vals+iter)).toString(),
+					method: "animate",
+				  args: [["{{ls.name}} "+(api_vals+o/(api_vals+iter)).toString()],
+					{
+						mode:"inmediate",
+				  	frame:{redraw:false,duration:speed},
+				  	transition: {duration:speed}
+					}]
+				};
+				data.push(trace1);
+				steps.push(step1);
+			};
+			let layout = {
+				  //autosize:true,
+					sliders:[{
+						pad:{t:30},
+						x:0.05,
+						len:0.95,
+						currentvalue:{
+							xanchor: "right",
+							prefix: "options: ",
+							font: {
+								color: '#888',
+								size: 20
+							}
+						},
+						transition: {duration:speed},
+						steps:steps
+					}],
+					updatemenus:[{
+							type:"buttons",
+							showactive: false,
+							x:0.05,
+							y:0,
+							xanchor:"right",
+							yanchor:"top",
+							pad:{t:60,r:30},
+							buttons:[{
+								label: "Play",
+								method: "animate",
+								args: [null,{
+									fromcurrent: true,
+									frame: {redraw:false, duration: speed},
+									transition: {duration: speed}
+								}]
+							}]
+						}],
+				  xaxis: {
+						range: [Math.min.apply(null,data[0]["x"]),
+										Math.max.apply(null,data[0]["x"])]},
+					yaxis:{
+						range: [Math.min.apply(null,data[0]["y"]),
+										Math.max.apply(null,data[0]["y"])]},
+					height:800,width:800,
+					title: "{{ls.name}} --> "+api_vals.toString()
+			};
+			Plotly.newPlot("herbertdiv",{data:[trace0],layout:layout,frames:data});
+		</script>
+
+{% endblock %}

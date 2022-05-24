@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  db_postgres:
+    image: "postgres"
+    container_name: db_postgres
+    ports:
+      - "7000:5432"
+      - "9000:5434"
+    env_file:
+      - "./database.env"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  django_app:
+    build: .
+    volumes:
+      - static:/code/static
+      - .:/code
+    expose:
+      - 8000
+    ports:
+      - 5432:8000
+      - 5434:8000
+    env_file:
+      - "./database.env"
+    depends_on:
+      - db_postgres
+
+  nginx:
+    image: nginx:1.13
+    ports:
+      - 8000:80
+    volumes:
+      - ./config/nginx/conf.d/local.conf:/etc/nginx/conf.d/local.conf
+      - static:/code/static
+    depends_on:
+      - django_app
+
+volumes:
+  .:
+  postgres_data:
+  static:

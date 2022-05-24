@@ -1,0 +1,30 @@
+{% extends "base_2.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+	h1 {
+		text-align:right;
+	}
+</style>
+<h1 style="font-size:2vw;">Herbert Vente Professional DashBoard Web Site 2</h1>
+	<div style="height: 100%; width:100%">
+	</div>
+  <form method="post" action="#">
+		{% csrf_token %}
+		<div class="input-group mb-3" style="font-size:1.5vw">
+			<div class="input-group-prepend">
+				<button style="font-size:1.5vw"
+						type="submit" name="list_values"
+						value="newItem" class="btn btn-success">Visualize</button>
+			</div>
+			<input type="text" name="newvalue" style="font-size:1.5vw">
+			 	<p style="font-size:1.5vw"
+				>Put some integer or float to plot a fractal representation grouped on mandelbrot set
+		</div>
+		{{ plot1 | safe }}
+		{{ plot2 | safe }}
+		{{ plot3 | safe }}
+	</form>
+
+{% endblock %}

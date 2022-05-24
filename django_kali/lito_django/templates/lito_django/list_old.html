@@ -1,0 +1,125 @@
+{% extends "lito_django/base.html" %}
+{% block title %} View list {% endblock %}
+{% block content %}
+	<h1>{{ls.name}} with id --> {{ls.id}}</h1>
+	<style>
+		.personal_plot{
+      height:30vh;
+      width:30vw;
+      top:15vh;
+      left:15vw;
+    }
+		.chart {
+ 			max-width: 1600px;
+  		max-height: 1000px;
+		}
+
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+	<form method="post" action="#">
+		{% csrf_token %}
+		{% for item in ls.item_set.all %}
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+				<div class="input-group-text">
+					{% if item.complete == True %}
+						<input type="checkbox" value="clicked" name="c{{item.id}}" checked>
+					{% else %}
+						<input type="checkbox" value="clicked" name="c{{item.id}}" checked>
+					{% endif %}
+				</div>
+			</div>
+			<input type="text" value="{{item.text}}" class="form-control">
+		</div>
+		{% endfor %}
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+				<button type="submit" name="newItem" value="newItem" class="btn btn-success">Add Item</button>
+			</div>
+			<input type="text" name="new">
+		</div>
+		<button type="submit" name="save" value="save" class="btn btn-success">Save</button>
+	</form>
+	<div style="height: 100%; width:100%">
+	</div>
+	<div class="personal_plot">
+		<script type="text/javascript">
+			let a = [];
+			let c = 0;
+			let d = 0;
+			let pi = Math.PI;
+			 let base = 80;
+			for (let b=0;b<base*2;b++){
+				let x = 2*pi/(base*2);
+				let y = (parseInt("{{ls.id}}")%6)*x;
+				 let point_x = Math.cos(c-pi/2);
+				 let point_y = 1+Math.sin(c-pi/2);
+				 let point2_x = Math.cos(d-pi/2);
+				let point2_y = 1+Math.sin(d-pi/2);
+				let guia = 0;
+				let guia_2 = 0;
+			  for (let q=0;q<base-20;q++){
+					let part = point2_x-point_x;
+				  let part_2 = point2_y-point_y;
+				  part = part/base;
+					part_2 = part_2/base;
+				  a.push([1.7+guia,1.7+guia_2]);
+				  guia += part;
+				  guia_2 += part_2;
+			   }
+
+				c += x;
+				d += y;
+			}
+			const dataset = a;
+
+		  const w = 1500;
+		  const h = 1500;
+		  const padding = 400;
+
+		  const xScale = d3.scaleLinear()
+						   .domain([0, d3.max(dataset, (d) => d[0])])
+						   .range([padding, w - padding]);
+
+		  const yScale = d3.scaleLinear()
+						   .domain([0, d3.max(dataset, (d) => d[1])])
+						   .range([h - padding, padding]);
+
+		  const svg_2 = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+
+		  svg_2.selectAll("circle")
+			 .data(dataset)
+			 .enter()
+			 .append("circle")
+			 .attr("cx", (d) => xScale(d[0]))
+			 .attr("cy",(d) => yScale(d[1]))
+			 .attr("r", (d) => 3)
+			 .attr("fill","black");
+
+		  const xAxis = d3.axisBottom(xScale);
+		  // Add your code below this line
+		  const yAxis = d3.axisLeft(yScale);
+		  // Add your code above this line
+
+		  svg_2.append("g")
+			 .attr("transform", "translate(0," + (h - padding) + ")")
+			 .call(xAxis);
+
+		  // Add your code below this line
+
+		 svg_2.append("g")
+			.attr("transform","translate(400,"+(0)+")")
+			.call(yAxis);
+
+		  // Add your code above this line
+		</script>
+	</div>
+
+{% endblock %}

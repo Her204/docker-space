@@ -1,0 +1,15 @@
+{% extends "lito_django/base.html" %}
+{% block title %}
+Login Here
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form method="post" class="from-group" style="width:50vw;font-size:2vw">
+	{% csrf_token %}
+	{{form|crispy}}
+	<p>Don't have an account? Create one <a href="/register">here</a></p>
+	<button type="submit" class="btn btn-success" style="font-size:2vw">Login</button>
+</form>
+{% endblock %}

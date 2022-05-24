@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    .personal_plot{
+      height:30vh;
+      width:30vw;
+      top:15vh;
+      left:15vw;
+    }
+    html,body{
+      height:100%;
+      width:100%;
+    }
+    .descripcion{
+      left:0vw;
+    }
+    .pro_plot{
+      height:30vh;
+      width:30vw;
+      top:15vh;
+      left:25vw;
+    }
+    .exts{
+  		height:100%;
+  		width:20vw;
+  		position:fixed;
+  		z-index:1;
+  		top:0;
+  		left:80vw;
+  		background-color:#111;
+  		overflow-x: :hidden;
+  		padding-top:20px;
+	  }
+    .exts a {
+  		padding:6px 8px 6px 16px;
+  		text-decoration: none;
+		  font-size:25px;
+  		color: #818181;
+  		display:block;
+  	}
+    .exts a:hover{
+  		color:#f1f1f1;
+      background-color:#555;
+  	}
+  	.sidenav{
+  		height:100%;
+  		width:15vw;
+  		position:fixed;
+      opacity:0.8;
+  		z-index:1;
+  		top:0;
+  		left:0;
+  		background-color:#111;
+  		overflow-x: :hidden;
+  		padding-top:20px;
+  	}
+  	.sidenav a {
+  		padding:6px 8px 6px 16px;
+  		text-decoration: none;
+		  font-size:1.5vw;
+  		color: #818181;
+  		display:block;
+  	}
+    .sidenav :hover{
+      background-color:#111;
+      color:#fff;
+      font-size:2vw;
+      border-style:solid;
+      border-color:black;
+      border-width:0.25vw;
+      width:25vw;
+    }
+  	.sidenav a:hover{
+  		color:#fff;
+      background-color:#555;
+  	}
+  	.lito_django{
+  		margin-left:160px;
+  		padding: 0px 10px;
+  	}
+  	body {
+  	    text-align: right;
+  	    font-family: "Helvetica", sans-serif;
+		    width: 100vw;
+  		  height: 100vh;
+     		grid-template-rows: repeat(2, 1fr);
+  	  	grid-template-columns: repeat(2, 1fr);
+  	}
+  	h1 {
+  		text-align: center;
+  	    font-size: 2em;
+  	    font-weight: bold;
+  	}
+  	.box {
+  		text-align: center;
+  	    border-radius: 5px;
+  	    background-color: #eee;
+  	    padding: 20px 5px;
+  	}
+  	button {
+  		text-align: center:
+  	    color: white;
+  	    border-radius: 5px;
+  	    border: 1px;
+  	    padding: 5px 10px 8px 10px;
+  	}
+  	button:hover {
+  	    border: 1px;
+  	}
+  	#myBar {
+  	    position: absolute;
+  	    width: 1%;
+  	    height: 100%;
+  	    background-color: green;
+  	}
+  </style>
+  <script src="https://unpkg.com/papaparse"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="
+  sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title%} Sitio Web Personal Herbert (Lito) {% endblock %}</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js" charset="utf-8"></script>
+</head>
+<body style="background-color:#fff">
+
+  <div class="sidenav">
+  <h1 style="font-size:2vw;color:#777;"> Visualizaciones y mas cosas </h1>
+	<a href="/home" style="">Pagina Principal</a>
+  <a href="/login" style="">Ingresa (Log In)</a>
+  <a href="/logout" style="">Cerrar Sesion (Log Out)</a>
+  <a href="/register" style="">Crea una cuenta (Sign In)</a>
+	<a href="/create" style="">Crea una lista nueva</a>
+	<a href="/view" style="">Personas que adoro</a>
+  <a href="/plot" style="">Dashboard</a>
+  <a href="/plot_2" style="">Dashboard_2</a>
+  </div>
+  <div id="content" name="content" class="lito_django">
+  	<div class="row justify-content-center" style="width:75vw,right:25vw">
+	  <div class="col-8" style="position:center">
+		  <h1 class="mt-2" style="background-color:#333;color:#fff;font-size:3vw;
+                        font-style:italic;width:50vw"> Cosas que adoro ...</h1>
+      <div class="descripcion">
+      <img src="https://i2.wp.com/codigoespagueti.com/wp-content/uploads/2021/11/Este-increible-cosplay-de-Misato-Katsuragi-ha-confirmado-que-es-la-waifu-mas-bella-de-toda-la-serie.png?resize=1280%2C720&quality=80&ssl=1"
+            style="width:50vw;height:50vh;border-color:#111;
+            border-style:solid;border-width:1vw;">
+      <p><h2 style="background-color:#333;color:#fff;width:50vw;border-style:solid;font-style:italic;font-size:2vw;
+                    border-width:0.25vw;border-color:black">
+                  Este sitio web lo desarrolle con el fin de mejorar mis habilidades
+                   en python, django, bash, postgresql,
+                   javascript, plotly, AWS, Docker y mas tecnologias
+                  pero finalmente decidi volverlo algo mas personal...</h2>
+      </div>
+		  <hr class="mt-0 mb-4" style="width:30vw">
+  		  {% block content %}
+  		  {% endblock %}
+      <div style="width:50vw;">
+        <button onclick="anim1();" style = "position:right;width:50vw;
+                                          font-size:2vw;
+                                          border-style:solid;
+                                          border-width:0.25vw;
+                                          border-color:black;">Donut spin</button>
+
+
+        <pre id="d" style="background-color:#222; color:#fff;
+                         width:50vw;position:center;border-color:black;
+                         border-width:0.25vw;border-style:solid; font-style:italic;font-size:1.2vw"></pre>
+      </div>
+      <script type="text/javascript">
+      (function() {
+      var _onload = function() {
+        var pretag = document.getElementById('d');
+        var canvastag = document.getElementById('canvasdonut');
+        var tmr1 = undefined, tmr2 = undefined;
+        var A=1, B=1;
+        var asciiframe=function() {
+          var b=[];
+          var z=[];
+          A += 0.07;
+          B += 0.03;
+          var cA=Math.cos(A), sA=Math.sin(A),
+              cB=Math.cos(B), sB=Math.sin(B);
+          for(var k=0;k<1760;k++) {
+            if (k%80==79){
+              b[k] = "\n";
+            }
+            else{
+              let x = "- MISATO KATSURAGI - MISATO KATSURAGI - MITSATO KATSURAGI -";
+              for(let rang=0;rang<5;rang++){
+                x+=x;
+              }
+              b[k] = x[k];
+            }
+            z[k]=0;
+          }
+          for(var j=0;j<6.28;j+=0.07) { // j <=> theta
+            var ct=Math.cos(j),st=Math.sin(j);
+            for(i=0;i<6.28;i+=0.02) {   // i <=> phi
+              var sp=Math.sin(i),cp=Math.cos(i),
+                  h=ct+2, // R1 + R2*cos(theta)
+                  D=1/(sp*h*sA+st*cA+5), // this is 1/z
+                  t=sp*h*cA-st*sA; // this is a clever factoring of some of the terms in x' and y'
+
+              var x=0|(40+30*D*(cp*h*cB-t*sB)),
+                  y=0|(12+15*D*(cp*h*sB+t*cB)),
+                  o=x+80*y,
+                  N=0|(8*((st*sA-sp*ct*cA)*cB-sp*ct*sA-st*cA-cp*ct*sB));
+              if(y<22 && y>=0 && x>=0 && x<79 && D>z[o])
+              {
+                z[o]=D;
+                b[o]=".,-~:;=!*#$@"[N>0?N:0];
+              }
+            }
+          }
+          pretag.innerHTML = b.join("");
+        };
+
+        window.anim1 = function() {
+          if(tmr1 === undefined) {
+            tmr1 = setInterval(asciiframe, 10);
+          } else {
+            clearInterval(tmr1);
+            tmr1 = undefined;
+          }
+        };
+
+        // This is a reimplementation according to my math derivation on the page
+
+        asciiframe();
+      }
+
+      if(document.all){
+        window.attachEvent('onload',_onload);}
+      else{
+        window.addEventListener("load",_onload,false);}
+      })();
+      </script>
+  	</div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+
+</body>
+</html>
