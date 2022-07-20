@@ -32,9 +32,9 @@ def plot_fao_2(response):
         return Z,N
     def img(text_change,a):
         xmin,xmax,xn=-2.75,+2.75,300
-        ymin,ymax,yn=-1.75,+1.75,150
+        ymin,ymax,yn=-1.75,+1.75,250
         maxiter = 400
-        horizon = 1.15*40
+        horizon = 1.4e+3.5
         log_horizon = np.log(np.log(horizon))/np.log(a)
 
         Z,N = mandelbrot_set(text_change,xmin,
@@ -56,7 +56,7 @@ def plot_fao_2(response):
         frames = []
         for a_12 in range(10+1):
             data = img(text_change,a+a_12/10)
-            #print(a_12,text_change)
+            print(a_12,text_change)
             #fig.add_trace(data)
             frames.append(data)
             #fig.update_layout(autosize=True)
@@ -72,7 +72,7 @@ def plot_fao_2(response):
                         )
         fig.update_layout(height=700,autosize=True,
                          #sliders=sliders,
-                         title="Mandelbrot set plot {}".format(a).upper(    ))
+                         title="Mandelbrot set plot {}".format(a).upper())
 
         plot_div = plot(fig,output_type="div",
                         include_plotlyjs=False)
@@ -84,7 +84,7 @@ def plot_fao_2(response):
         b = float(txt_2)
         cases = [
              ["",""],
-             ["np.tan(",")"],
+             #["np.tan(",")"],
              #["np.cosh(",")"]
              ]
         context = {"plot{}".format(i+1):sliders_img(a,b) for i,a in enumerate(cases)}
